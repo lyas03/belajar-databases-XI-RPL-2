@@ -1,0 +1,80 @@
+CREATE TABLE `employee` (
+  `id_emplo` int(11) NOT NULL PRIMARY KEY,
+  `full_name` varchar(255) NOT NULL,
+  `gender` char(1) NOT NULL,
+  `place_birth` varchar(50) DEFAULT NULL,
+  `date_birth` date DEFAULT NULL,
+  `id_job` char(3) DEFAULT NULL
+);
+
+INSERT INTO `employee` (`id_emplo`, `full_name`, `gender`, `place_birth`, `date_birth`, `id_job`) VALUES
+(1, 'Krisna Kusuma', 'M', 'Bandung', '1992-02-27', 'CEO'),
+(2, 'Dewi Vina', 'F', 'Bandung', '1995-04-20', 'CTO'),
+(3, 'Abdul Harun', 'M', 'Jakarta', '1994-08-10', 'HRR'),
+(4, 'Yuda Agung', 'M', 'Bandung', '1999-08-01', 'MAR'),
+(5, 'Agus Eka', 'M', 'Solo', '1994-12-12', 'ACC'),
+(6, 'Hasan Rahman', 'M', 'Cimahi', '2000-11-01', 'DEV'),
+(7, 'Yuda Yuliana', 'M', 'Bandung', '2001-04-21', 'BAC'),
+(8, 'Dwi Rahman', 'F', 'Bandung', '2000-05-12', 'LEA'),
+(9, 'Wati Siti', 'F', 'Jakarta', '2002-01-30', 'FRO'),
+(10, 'Ridwan Akbar', 'M', 'Jakarta', '2001-05-05', NULL),
+(11, 'Anisa Ruslan', 'F', 'Subang', '2000-04-03', 'UIX'),
+(12, 'Arif Putra', 'M', 'Subang', '2002-07-10', NULL);
+
+CREATE TABLE `jobs` (
+  `id_job` char(3) NOT NULL PRIMARY KEY,
+  `name_job` varchar(50) NOT NULL
+);
+
+INSERT INTO `jobs` (`id_job`, `name_job`) VALUES
+('ACC', 'Accounting'),
+('BAC', 'BackEnd Developer'),
+('CEO', 'CEO'),
+('CTO', 'CTO'),
+('DEV', 'DevOps'),
+('FRO', 'FrontEnd Developer'),
+('HRR', 'Human Resouce'),
+('ITS', 'IT Support'),
+('LEA', 'Leader'),
+('MAR', 'Marketing'),
+('MOB', 'Mobile Developer'),
+('UIX', 'UI/UX Developer');
+
+SELECT employee.* , jobs.*
+FROM employee
+INNER JOIN jobs ON jobs.id_job = employee.id_job;
+
+SELECT 
+employee.full_name, employee.id_job , jobs.name_job
+FROM employee
+LEFT JOIN jobs ON jobs.id_job = employee.id_job
+WHERE employee.id_job IS NULL;
+
+SELECT 
+employee.full_name, employee.id_job , jobs.name_job
+FROM employee
+LEFT JOIN jobs ON jobs.id_job = employee.id_job
+WHERE employee.full_name LIKE "%u%";
+
+SELECT 
+employee.full_name,  employee.place_birth,
+employee.id_job , jobs.name_job
+FROM employee
+LEFT JOIN jobs ON jobs.id_job = employee.id_job
+WHERE employee.place_birth = 'Subang' OR
+employee.place_birth = 'Bandung';
+
+SELECT 
+employee.full_name,  employee.place_birth,
+employee.date_birth, employee.id_job , jobs.name_job
+FROM employee
+LEFT JOIN jobs ON jobs.id_job = employee.id_job
+ORDER BY employee.date_birth ASC;
+
+SELECT 
+employee.full_name, employee.gender, employee.place_birth,
+employee.date_birth, employee.id_job , jobs.name_job
+FROM employee
+LEFT JOIN jobs ON jobs.id_job = employee.id_job  
+WHERE employee.place_birth = 'Bandung'
+AND employee.gender = 'F';
